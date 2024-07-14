@@ -18,7 +18,7 @@ def create_aussen_plot(df, start_date, end_date, show_sunday_marker):
 
     # Define plot size optimized for A4 paper
     plot_width = 800
-    plot_height = 800  # A4 height divided by 3 (approx 11.69/3 inches)
+    plot_height = 800  
 
     # Create Bokeh plot
     plot = figure(title='Aussen', x_axis_label='Time', width=plot_width, height=plot_height,
