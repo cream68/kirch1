@@ -1,4 +1,6 @@
-
+import pandas as pd
+from absolute_humidity import calculate_absolute_humidity
+from calculate_temp_rh_60 import calculate_temp_rh_60
 
 def process_file(file_path, calculate_temp_60=False):
     """
@@ -16,11 +18,11 @@ def process_file(file_path, calculate_temp_60=False):
     df["date"] = pd.to_datetime(df_temp.iloc[:, 0])
     df["temp"] = df_temp.iloc[:, 5]
     df["rH"] = df_temp.iloc[:, 3]
-    df["aH"] = calculate_absolute_humidity(df["temp"], df["rH"])
+    df["aH"] = calculate_absolute_humidity(df["temp"], df["rH"]).round(2)
 
     if calculate_temp_60:
-        df["temp_60"] = df.apply(lambda row: calculate_temp_rh_60(row["rH"], row["aH"], row["temp"]), axis=1)
-        df['ah_slope'] = df['aH'].diff() / (df['date'].diff().dt.total_seconds() / 3600)
-        df['temp_slope'] = df['temp'].diff() / (df['date'].diff().dt.total_seconds() / 3600)
+        df["temp_60"] = df.apply(lambda row: calculate_temp_rh_60(row["rH"], row["aH"], row["temp"]), axis=1).round(2)
+        df['ah_slope'] = (df['aH'].diff() / (df['date'].diff().dt.total_seconds() / 3600)).round(2)
+        df['temp_slope'] = (df['temp'].diff() / (df['date'].diff().dt.total_seconds() / 3600)).round(2)
 
     return df
