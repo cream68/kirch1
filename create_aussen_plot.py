@@ -35,13 +35,16 @@ def create_aussen_plot(df, start_date, end_date, show_sunday_marker):
     plot.yaxis.axis_label = 'Temperature (°C)'
 
 
-    # x-Axis format
+    # Setting the DatetimeTickFormatter with appropriate format for different levels of zoom
     plot.xaxis.formatter = DatetimeTickFormatter(
-        hours=["%d %B %Y-%H:%M"],
-        days=["%d %B %Y-%H:%M"],
-        months=["%d %B %Y-%H:%M"],
-        years=["%d %B %Y-%H:%M"],
+        hours=["%d %B %Y %H:%M"],
+        days=["%d %B %Y"],
+        months=["%B %Y"],
+        years=["%Y"]
     )
+
+
+
     plot.xaxis.major_label_orientation = 3.1415 / 4
     plot.xaxis.ticker.desired_num_ticks = 10
 

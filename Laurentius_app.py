@@ -4,8 +4,9 @@ from bokeh.layouts import gridplot
 from create_orgel_plot import create_orgel_plot
 from create_aussen_plot import create_aussen_plot
 from create_bankreihe_plot import create_bankreihe_plot
-from create_orgel_plot_temp import create_orgel_plot_temp
+#from create_orgel_plot_temp_rH60 import create_orgel_temp_rH60
 from create_slope_plot import create_slope_plot
+from create_temp_slope_plot import create_slope_plot
 from bokeh.io import export_svgs
 
 # Set the page layout to wide
@@ -65,11 +66,15 @@ def main():
     p2 = create_orgel_plot(filtered_orgel, start_date, end_date, show_sunday_marker, p1_x_range, show_hum_box_orgel,lower_rH_orgel,upper_rH_orgel)
     p3 = create_bankreihe_plot(filtered_bankreihe, start_date, end_date, show_sunday_marker, p1_x_range, show_hum_box_bankreihe,lower_rh_bank,upper_rh_bank)
 
-    p4 = create_orgel_plot_temp(filtered_orgel, start_date, end_date, show_sunday_marker, p1_x_range)
-    p5 = create_slope_plot(filtered_orgel, start_date, end_date, show_sunday_marker, p1_x_range)
+    #p4 = create_orgel_plot_temp(filtered_orgel, start_date, end_date, show_sunday_marker, p1_x_range)
+    p5 = create_orgel_temp_slope(filtered_orgel, start_date, end_date, show_sunday_marker, p1_x_range)
+
+
     
     # Display Bokeh plot using st.bokeh_chart
     st.subheader('Efficio Daten Auswertung')
-    st.bokeh_chart(gridplot([[p1],[p2],[p3],[p4],[p5]], toolbar_location="above",sizing_mode='stretch_both'))
+    #st.bokeh_chart(gridplot([[p1],[p2],[p3],[p4],[p5]], toolbar_location="above",sizing_mode='stretch_both'))
+    st.bokeh_chart(gridplot([[p1],[p2],[p3],[p5]], toolbar_location="above",sizing_mode='stretch_both'))
+
 if __name__ == "__main__":
     main()

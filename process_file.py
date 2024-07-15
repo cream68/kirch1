@@ -19,10 +19,10 @@ def process_file(file_path, calculate_temp_60=False):
     df["temp"] = df_temp.iloc[:, 5]
     df["rH"] = df_temp.iloc[:, 3]
     df["aH"] = calculate_absolute_humidity(df["temp"], df["rH"]).round(2)
+    df['temp_slope'] = (df['temp'].diff() / (df['date'].diff().dt.total_seconds() / 3600)).round(2)
+    df['ah_slope'] = (df['aH'].diff() / (df['date'].diff().dt.total_seconds() / 3600)).round(2)
 
     if calculate_temp_60:
         df["temp_60"] = df.apply(lambda row: calculate_temp_rh_60(row["rH"], row["aH"], row["temp"]), axis=1).round(2)
-        df['ah_slope'] = (df['aH'].diff() / (df['date'].diff().dt.total_seconds() / 3600)).round(2)
-        df['temp_slope'] = (df['temp'].diff() / (df['date'].diff().dt.total_seconds() / 3600)).round(2)
 
     return df
