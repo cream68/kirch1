@@ -1,7 +1,7 @@
-import streamlit as st
-import pandas as pd
 import numpy as np
 np.bool8 = np.bool
+import streamlit as st
+import pandas as pd
 from bokeh.layouts import gridplot
 from create_orgel_plot import create_orgel_plot
 from create_aussen_plot import create_aussen_plot
