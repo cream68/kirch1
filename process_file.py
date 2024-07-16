@@ -24,5 +24,5 @@ def process_file(file_path, calculate_temp_60=False):
 
     if calculate_temp_60:
         df["temp_60"] = df.apply(lambda row: calculate_temp_rh_60(row["rH"], row["aH"], row["temp"]), axis=1).round(2)
-
+   
     return df

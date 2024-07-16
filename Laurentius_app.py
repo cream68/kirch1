@@ -1,12 +1,14 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
+np.bool8 = np.bool
 from bokeh.layouts import gridplot
 from create_orgel_plot import create_orgel_plot
 from create_aussen_plot import create_aussen_plot
 from create_bankreihe_plot import create_bankreihe_plot
 #from create_orgel_plot_temp_rH60 import create_orgel_temp_rH60
 from create_slope_plot import create_slope_plot
-from create_temp_slope_plot import create_slope_plot
+from create_tslope_plot import create_tslope_plot
 from bokeh.io import export_svgs
 
 # Set the page layout to wide
@@ -17,6 +19,8 @@ st.set_page_config(layout="wide")
 orgel_df = pd.read_parquet("orgel.parquet", engine='pyarrow')
 aussen_df = pd.read_parquet("aussen.parquet", engine='pyarrow')
 bankreihe_df = pd.read_parquet("bankreihe.parquet", engine='pyarrow')
+nutzheiz_df = pd.read_parquet("nutzheiz.parquet", engine='pyarrow')
+grundheiz_df = pd.read_parquet("grundheiz.parquet", engine='pyarrow')
 
 # Ensure datetime index
 orgel_df['date'] = pd.to_datetime(orgel_df['date'])
@@ -67,8 +71,7 @@ def main():
     p3 = create_bankreihe_plot(filtered_bankreihe, start_date, end_date, show_sunday_marker, p1_x_range, show_hum_box_bankreihe,lower_rh_bank,upper_rh_bank)
 
     #p4 = create_orgel_plot_temp(filtered_orgel, start_date, end_date, show_sunday_marker, p1_x_range)
-    p5 = create_orgel_temp_slope(filtered_orgel, start_date, end_date, show_sunday_marker, p1_x_range)
-
+    p5 = create_tslope_plot(filtered_orgel, start_date, end_date, show_sunday_marker, p1_x_range, nutzheiz_df,grundheiz_df)
 
     
     # Display Bokeh plot using st.bokeh_chart

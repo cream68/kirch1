@@ -1,6 +1,8 @@
 import pandas as pd
 from process_file import process_file
 from baseload_energy_calculation import calculate_energy_consumption
+from warmup import warmup
+pd.options.mode.chained_assignment = None
 
 parseFile = True
 
@@ -13,8 +15,10 @@ def main():
         orgel_df.to_parquet('orgel.parquet', engine='pyarrow')
 
         # Calculate and print the energy consumption
-        heiz_df = calculate_energy_consumption(aussen_df, orgel_df,heating_temp=10)
-        heiz_df.to_parquet('heiz.parquet', engine='pyarrow')
+        grundheiz_df = calculate_energy_consumption(aussen_df, orgel_df,heating_temp=9.5)
+        grundheiz_df.to_parquet('grundheiz.parquet', engine='pyarrow')
+        nutzheiz_df = warmup(aussen_df, orgel_df)
+        nutzheiz_df.to_parquet('nutzheiz.parquet', engine='pyarrow')
 
         bankreihe_df = process_file('bankreihe.xlsx')
         bankreihe_df.to_parquet('bankreihe.parquet', engine='pyarrow')

@@ -30,6 +30,9 @@ def calculate_energy_consumption(aussen_df, orgel_df,heating_temp=9):
     # Set temp_diff to zero where temp_orgel is below heating_temp 
     merged_df.loc[(merged_df['temp_orgel'] > heating_temp) | (merged_df['temp_aussen'] > merged_df['temp_orgel']), 'temp_diff'] = 0
 
+  # Add base_heat column
+    merged_df['base_heat'] = merged_df['temp_diff'] > 0
+
   # Filter rows where orgel temperature is below heating_temp and temperature outside is less than temperature inside
     filtered_df = merged_df[merged_df['temp_diff'] > 0]
 
@@ -48,13 +51,15 @@ def calculate_energy_consumption(aussen_df, orgel_df,heating_temp=9):
     energy_consumption = energy_integral
 
     # Create the new DataFrame with required columns
-    result_df = merged_df[['date', 'temp_orgel', 'temp_aussen', 'temp_diff']]
+    result_df = merged_df[['date', 'temp_orgel', 'temp_aussen', 'temp_diff','base_heat']]
     result_df = result_df.rename(columns={'temp_diff': f'temp_diff_sub_{heating_temp}'})
 
     #Print
+    print("---Grundtemperierung---")
     print(f"Base load calculation for Temp Orgel < {heating_temp:.1f} °C")
     print(f"Base load energy consumption: {energy_consumption:.1f} kWh")
     print(f"average temperature difference: {average_delta_k:.1f} K")
-    print(f"total time in hours: {total_time_hours} h")
+    print(f"total time in hours: {total_time_hours:.1f} h")
+    print(f"Sum Delta Temperature*h: {average_delta_k*total_time_hours:.1f} h")
 
     return result_df
